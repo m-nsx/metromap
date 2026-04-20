@@ -1,5 +1,5 @@
 import { createMetroMapRenderer } from "../core/mapRenderer.js";
-import { loadNetworkBundle } from "../services/dataService.js";
+import { loadSiteNetworkBundle } from "../services/siteDataService.js";
 import { findShortestPath } from "../services/pathService.js";
 
 const startSelect = document.getElementById("start-station");
@@ -205,12 +205,12 @@ function calculateRoute() {
 }
 
 async function reloadNetwork() {
-  state.bundle = await loadNetworkBundle({ preferStorage: true });
+  state.bundle = await loadSiteNetworkBundle();
   renderer.setBundle(state.bundle);
   renderer.clearRoute();
   populateStationSelectors();
   resetRouteDisplay("Lance un calcul pour afficher les details d'itineraire.");
-  setPlannerMessage("Reseau recharge depuis le stockage local.", "ok");
+  setPlannerMessage("Reseau recharge depuis le fichier JSON du site.", "ok");
 }
 
 function attachEvents() {

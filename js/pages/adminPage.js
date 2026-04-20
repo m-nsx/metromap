@@ -633,7 +633,7 @@ function persistNetwork() {
 
   state.bundle = saveNetworkBundle(state.bundle);
   refreshPreview(true);
-  setAdminFeedback("Reseau sauvegarde. Les 3 pages utilisent maintenant cette version.", "ok");
+  setAdminFeedback("Brouillon local sauvegarde. Exporte le JSON pour mettre a jour le site.", "ok");
 }
 
 function optimizeLayout() {
@@ -668,7 +668,7 @@ function populateWithDemo() {
   state.bundle = resetNetworkBundle();
   state.bundle = saveNetworkBundle(state.bundle);
   refreshEditor();
-  setAdminFeedback("Donnees de demo rechargees puis sauvegardees.", "ok");
+  setAdminFeedback("Donnees de demo rechargees dans le brouillon local.", "ok");
 }
 
 function clearCurrentMap() {
@@ -689,7 +689,7 @@ function clearCurrentMap() {
 
   state.bundle = saveNetworkBundle(nextBundle);
   refreshEditor();
-  setAdminFeedback("Carte vide sauvegardee (stations et lignes supprimees).", "ok");
+  setAdminFeedback("Carte vide sauvegardee dans le brouillon local.", "ok");
 }
 
 function exportNetworkToJson() {
@@ -699,7 +699,7 @@ function exportNetworkToJson() {
   }
 
   downloadJsonFile(buildExportFileName(), state.bundle);
-  setAdminFeedback("Export JSON effectue.", "ok");
+  setAdminFeedback("Export JSON effectue. Remplace data/metro-network.json dans le site.", "ok");
 }
 
 function openImportDialog() {
@@ -728,7 +728,7 @@ async function importNetworkFromJsonFile(file) {
 
   state.bundle = saveNetworkBundle(importedBundle);
   refreshEditor();
-  setAdminFeedback("Import JSON reussi et sauvegarde appliquee.", "ok");
+  setAdminFeedback("Import JSON reussi dans le brouillon local.", "ok");
 }
 
 async function ensureBundleLoaded() {

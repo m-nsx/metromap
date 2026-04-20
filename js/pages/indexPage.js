@@ -1,5 +1,5 @@
 import { createMetroMapRenderer } from "../core/mapRenderer.js";
-import { loadNetworkBundle, saveNetworkBundle } from "../services/dataService.js";
+import { loadSiteNetworkBundle } from "../services/siteDataService.js";
 import { deepClone } from "../utils/object.js";
 
 const svg = document.getElementById("metro-map");
@@ -47,26 +47,26 @@ function simulateDynamicUpdate() {
     lineFive.stations.push("S13");
   }
 
-  bundle = saveNetworkBundle(nextBundle);
+  bundle = nextBundle;
   renderer.setBundle(bundle, { preserveView: true });
   renderer.setActiveLine(null);
-  flashStatus("Reseau modifie puis sauvegarde localement.");
+  flashStatus("Reseau modifie localement (simulation non persistante).");
 }
 
-async function reloadFromStorage() {
-  bundle = await loadNetworkBundle({ preferStorage: true });
+async function reloadFromJson() {
+  bundle = await loadSiteNetworkBundle();
   renderer.setBundle(bundle);
   renderer.clearRoute();
-  flashStatus("Reseau recharge depuis le stockage local.");
+  flashStatus("Reseau recharge depuis le fichier JSON du site.");
 }
 
 async function init() {
-  bundle = await loadNetworkBundle({ preferStorage: true });
+  bundle = await loadSiteNetworkBundle();
   renderer.setBundle(bundle);
 
   simulateButton.addEventListener("click", simulateDynamicUpdate);
   resetViewButton.addEventListener("click", () => renderer.resetView());
-  reloadButton.addEventListener("click", reloadFromStorage);
+  reloadButton.addEventListener("click", reloadFromJson);
 }
 
 init().catch((error) => {
