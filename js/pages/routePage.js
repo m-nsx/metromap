@@ -229,12 +229,12 @@ function attachEvents() {
     setPlannerMessage("Itineraire efface.", "info");
   });
 
-  reloadButton.addEventListener("click", () => {
-    reloadNetwork().catch((error) => {
-      console.error(error);
-      setPlannerMessage("Impossible de recharger le reseau.", "error");
-    });
-  });
+  // reloadButton.addEventListener("click", () => {
+  //   reloadNetwork().catch((error) => {
+  //     console.error(error);
+  //     setPlannerMessage("Impossible de recharger le reseau.", "error");
+  //   });
+  // });
 }
 
 async function init() {

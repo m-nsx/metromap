@@ -24,34 +24,34 @@ function flashStatus(message) {
   }, 1700);
 }
 
-function simulateDynamicUpdate() {
-  if (!bundle) {
-    return;
-  }
+// function simulateDynamicUpdate() {
+//   if (!bundle) {
+//     return;
+//   }
 
-  const nextBundle = deepClone(bundle);
-  const movingStations = ["S8", "S9", "S12"];
+//   const nextBundle = deepClone(bundle);
+//   const movingStations = ["S8", "S9", "S12"];
 
-  for (const stationId of movingStations) {
-    const station = nextBundle.data.stations.find((item) => item.id === stationId);
-    if (!station) {
-      continue;
-    }
+//   for (const stationId of movingStations) {
+//     const station = nextBundle.data.stations.find((item) => item.id === stationId);
+//     if (!station) {
+//       continue;
+//     }
 
-    station.x += Math.round((Math.random() - 0.5) * 60);
-    station.y += Math.round((Math.random() - 0.5) * 40);
-  }
+//     station.x += Math.round((Math.random() - 0.5) * 60);
+//     station.y += Math.round((Math.random() - 0.5) * 40);
+//   }
 
-  const lineFive = nextBundle.data.connections.find((line) => line.lineId === "L5");
-  if (lineFive && !lineFive.stations.includes("S13")) {
-    lineFive.stations.push("S13");
-  }
+//   const lineFive = nextBundle.data.connections.find((line) => line.lineId === "L5");
+//   if (lineFive && !lineFive.stations.includes("S13")) {
+//     lineFive.stations.push("S13");
+//   }
 
-  bundle = nextBundle;
-  renderer.setBundle(bundle, { preserveView: true });
-  renderer.setActiveLine(null);
-  flashStatus("Reseau modifie localement (simulation non persistante).");
-}
+//   bundle = nextBundle;
+//   renderer.setBundle(bundle, { preserveView: true });
+//   renderer.setActiveLine(null);
+//   flashStatus("Reseau modifie localement (simulation non persistante).");
+// }
 
 async function reloadFromJson() {
   bundle = await loadSiteNetworkBundle();
@@ -64,9 +64,9 @@ async function init() {
   bundle = await loadSiteNetworkBundle();
   renderer.setBundle(bundle);
 
-  simulateButton.addEventListener("click", simulateDynamicUpdate);
+  // simulateButton.addEventListener("click", simulateDynamicUpdate);
   resetViewButton.addEventListener("click", () => renderer.resetView());
-  reloadButton.addEventListener("click", reloadFromJson);
+  // reloadButton.addEventListener("click", reloadFromJson);
 }
 
 init().catch((error) => {

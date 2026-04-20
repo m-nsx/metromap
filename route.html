@@ -12,8 +12,8 @@
   <div class="page-shell">
     <header class="topbar">
       <div class="brand">
-        <p>Data Viz SVG</p>
-        <h1>Calculateur d'itineraire metro</h1>
+        <h1>UTILS</h1>
+        <p>Unicorp Transportation, Infrastructure & Logistical Services</p>
       </div>
       <div class="topbar-actions">
         <nav class="nav-links" aria-label="Navigation principale">
@@ -27,39 +27,39 @@
       <div class="route-layout">
         <section class="panel planner-panel">
           <div class="panel-head">
-            <h2>Recherche de trajet</h2>
-            <p>Calcule le plus court chemin dans le graphe du reseau.</p>
+            <h2>Planificateur d'itinéraire</h2>
+            <p>Calculez le chemin optimal entre deux stations</p>
           </div>
 
           <div class="panel-body">
             <div>
-              <label for="start-station">Station de depart</label>
+              <label for="start-station">Station de départ</label>
               <select id="start-station"></select>
             </div>
 
             <div>
-              <label for="end-station">Station d'arrivee</label>
+              <label for="end-station">Station d'arrivée</label>
               <select id="end-station"></select>
             </div>
 
             <div class="actions-row">
-              <button id="calculate-route" class="primary" type="button">Calculer itineraire</button>
+              <button id="calculate-route" class="primary" type="button">Calculer</button>
               <button id="invert-route" type="button">Inverser</button>
-              <button id="clear-route" type="button">Effacer itineraire</button>
-              <button id="reload-network" class="warn" type="button">Recharger le JSON</button>
+              <button id="clear-route" type="button">Effacer</button>
+              <!-- <button id="reload-network" class="warn" type="button">Recharger les données</button> -->
             </div>
 
-            <p id="planner-message" class="status-text">Selectionne un depart et une arrivee puis lance le calcul.</p>
+            <p id="planner-message" class="status-text">Sélectionnez une station de départ et une station d'arrivée</p>
 
             <div class="route-output">
-              <p id="route-summary" class="status-text route-summary">Lance un calcul pour afficher les details d'itineraire.</p>
+              <p id="route-summary" class="status-text route-summary">Lancez un calcul pour afficher les details d'itineraire</p>
               <div id="route-metrics" class="route-metrics hidden">
                 <article class="metric-card">
                   <p class="metric-label">Distance</p>
                   <p id="metric-distance" class="metric-value">-</p>
                 </article>
                 <article class="metric-card">
-                  <p class="metric-label">Duree estimee</p>
+                  <p class="metric-label">Durée</p>
                   <p id="metric-duration" class="metric-value">-</p>
                 </article>
                 <article class="metric-card">
@@ -75,14 +75,14 @@
 
         <section class="panel map-panel">
           <div class="panel-head">
-            <h2>Visualisation du trajet</h2>
-            <p>L'itineraire trouve est superpose avec glow et repere visuel des stations de passage.</p>
+            <h2>Trajet</h2>
+            <p>L'itinéaire calculé est affiché sur la carte</p>
           </div>
           <div class="panel-body">
             <div class="map-shell">
               <svg id="route-map" aria-label="Carte itineraire"></svg>
             </div>
-            <p id="route-map-status" class="status-text">Survole une ligne ou une station pour details contextuels.</p>
+            <p id="route-map-status" class="status-text">Survolez une ligne ou une station pour afficher les détails</p>
             <div id="route-tooltip" class="tooltip" aria-hidden="true"></div>
           </div>
         </section>

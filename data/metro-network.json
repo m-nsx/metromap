@@ -1,11 +1,10 @@
 {
   "config": {
     "lines": {
-      "L1": "#ff6b57",
-      "L2": "#00b5d8",
-      "L3": "#8fd14f",
-      "L4": "#ffd166",
-      "L5": "#ff9f68"
+      "A": "#f1af0d",
+      "B": "#1e8ac8",
+      "C": "#5fab12",
+      "D": "#aa2da0"
     },
     "lineStyle": {
       "strokeWidth": 12,
@@ -18,8 +17,8 @@
       "stroke": "#d8e4f2",
       "strokeWidth": 3,
       "fill": "#0f1823",
-      "labelDx": 13,
-      "labelDy": -12
+      "labelDx": 12,
+      "labelDy": -8
     },
     "display": {
       "showGrid": true,
@@ -39,159 +38,192 @@
     "stations": [
       {
         "id": "S1",
-        "name": "Aurore",
-        "x": 120,
-        "y": 180,
+        "name": "Pôle Médical",
+        "subtitle": "Services de santé civile",
+        "x": 190,
+        "y": 70,
         "labelDy": -16
       },
       {
         "id": "S2",
-        "name": "Opera",
-        "x": 280,
-        "y": 180,
+        "name": "Upper Hills",
+        "subtitle": "",
+        "x": 190,
+        "y": 260,
         "labelDy": -16
       },
       {
         "id": "S3",
-        "name": "Centrale",
-        "x": 440,
-        "y": 180,
+        "name": "Bibliothèque",
+        "subtitle": "archives nationales",
+        "x": 190,
+        "y": 380,
         "labelDy": -16
       },
       {
         "id": "S4",
-        "name": "Rivoli",
-        "x": 600,
-        "y": 180,
+        "name": "Port Ouest",
+        "subtitle": "",
+        "x": 0,
+        "y": 380,
         "labelDy": -16
       },
       {
         "id": "S5",
-        "name": "Bastille",
-        "x": 760,
-        "y": 180,
+        "name": "Université",
+        "subtitle": "",
+        "x": 540,
+        "y": 380,
         "labelDy": -16
       },
       {
         "id": "S6",
-        "name": "Nation",
-        "x": 920,
-        "y": 180,
+        "name": "Quiet Coast",
+        "subtitle": "",
+        "x": 700,
+        "y": 380,
         "labelDy": -16
       },
       {
         "id": "S7",
-        "name": "Montmartre",
-        "x": 280,
-        "y": 330,
-        "labelDy": -14
+        "name": "Amber Palm District",
+        "subtitle": "",
+        "x": 1000,
+        "y": 380,
+        "labelDy": -16
       },
       {
         "id": "S8",
-        "name": "Chatelet",
-        "x": 440,
-        "y": 330,
-        "labelDy": -14
+        "name": "Défense",
+        "subtitle": "",
+        "x": 1220,
+        "y": 380,
+        "labelDy": -16
       },
       {
         "id": "S9",
-        "name": "Gare Sud",
-        "x": 600,
-        "y": 330,
-        "labelDy": -14
+        "name": "Porte de l'Anneau",
+        "subtitle": "",
+        "x": 1370,
+        "y": 380,
+        "labelDy": -16
       },
       {
         "id": "S10",
-        "name": "Universite",
-        "x": 760,
-        "y": 330,
-        "labelDy": -14
-      },
-      {
-        "id": "S14",
-        "name": "Port Ouest",
-        "x": 120,
-        "y": 330,
-        "labelDy": -14,
-        "labelDx": 14
+        "name": "Aéroport",
+        "subtitle": "",
+        "x": 540,
+        "y": 0,
+        "labelDy": -16
       },
       {
         "id": "S11",
-        "name": "Parc Expo",
-        "x": 440,
-        "y": 500,
-        "labelDy": 24,
-        "labelDx": 10
+        "name": "Panini Jam",
+        "subtitle": "",
+        "x": 540,
+        "y": 490,
+        "labelDy": -16
       },
       {
         "id": "S12",
-        "name": "Aeroport",
-        "x": 600,
-        "y": 500,
-        "labelDy": 24,
-        "labelDx": 10
+        "name": "Détroit",
+        "subtitle": "",
+        "x": 540,
+        "y": 610,
+        "labelDy": -16
       },
       {
         "id": "S13",
-        "name": "Stade",
-        "x": 760,
-        "y": 500,
-        "labelDy": 24,
-        "labelDx": 10
+        "name": "La Plaine",
+        "subtitle": "",
+        "x": 430,
+        "y": 610,
+        "labelDy": -16
+      },
+      {
+        "id": "S14",
+        "name": "Grand Lac",
+        "subtitle": "",
+        "x": 340,
+        "y": 610,
+        "labelDy": -16
+      },
+      {
+        "id": "S15",
+        "name": "Base Militaire",
+        "subtitle": "",
+        "x": 240,
+        "y": 610,
+        "labelDy": -16
       }
     ],
     "connections": [
       {
-        "lineId": "L1",
-        "name": "Ligne 1",
+        "lineId": "A",
+        "name": "Ligne A",
+        "type": "metro",
+        "stations": [
+          "S15",
+          "S14",
+          "S13",
+          "S12"
+        ],
+        "segmentTimes": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "lineId": "B",
+        "name": "Ligne B",
+        "type": "metro",
+        "stations": [
+          "S10",
+          "S5",
+          "S11",
+          "S12"
+        ],
+        "segmentTimes": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "lineId": "C",
+        "name": "Ligne C",
+        "type": "metro",
+        "stations": [
+          "S4",
+          "S3",
+          "S5",
+          "S6",
+          "S7",
+          "S8",
+          "S9"
+        ],
+        "segmentTimes": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "lineId": "D",
+        "name": "Ligne D",
+        "type": "metro",
         "stations": [
           "S1",
           "S2",
-          "S3",
-          "S4",
-          "S5",
-          "S6"
-        ]
-      },
-      {
-        "lineId": "L2",
-        "name": "Ligne 2",
-        "stations": [
-          "S14",
-          "S7",
-          "S8",
-          "S9",
-          "S10",
-          "S13"
-        ]
-      },
-      {
-        "lineId": "L3",
-        "name": "Ligne 3",
-        "stations": [
-          "S2",
-          "S7",
-          "S11"
-        ]
-      },
-      {
-        "lineId": "L4",
-        "name": "Ligne 4",
-        "stations": [
-          "S4",
-          "S9",
-          "S12"
-        ]
-      },
-      {
-        "lineId": "L5",
-        "name": "Ligne 5",
-        "stations": [
-          "S3",
-          "S8",
-          "S11",
-          "S12",
-          "S10"
+          "S3"
+        ],
+        "segmentTimes": [
+          1,
+          1
         ]
       }
     ]
