@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcul Itineraire Metro</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/route.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <p>Data Viz SVG</p>
+        <h1>Calculateur d'itineraire metro</h1>
+      </div>
+      <div class="topbar-actions">
+        <nav class="nav-links" aria-label="Navigation principale">
+          <a href="index.html">Carte</a>
+          <a class="active" href="route.html">Itineraire</a>
+        </nav>
+        <a class="admin-key-btn" href="admin.html" aria-label="Acceder au panel securise">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.9 3a6.1 6.1 0 0 0-4.83 9.83L3 19.9V22h2.1l1.5-1.5 1 1 1.4-1.4-1-1L9.9 17h2l1.63-1.63A6.1 6.1 0 1 0 14.9 3zm0 2a4.1 4.1 0 1 1 0 8.2 4.1 4.1 0 0 1 0-8.2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="route-layout">
+        <section class="panel planner-panel">
+          <div class="panel-head">
+            <h2>Recherche de trajet</h2>
+            <p>Calcule le plus court chemin dans le graphe du reseau.</p>
+          </div>
+
+          <div class="panel-body">
+            <div>
+              <label for="start-station">Station de depart</label>
+              <select id="start-station"></select>
+            </div>
+
+            <div>
+              <label for="end-station">Station d'arrivee</label>
+              <select id="end-station"></select>
+            </div>
+
+            <div class="actions-row">
+              <button id="calculate-route" class="primary" type="button">Calculer itineraire</button>
+              <button id="invert-route" type="button">Inverser</button>
+              <button id="clear-route" type="button">Effacer itineraire</button>
+              <button id="reload-network" class="warn" type="button">Actualiser reseau</button>
+            </div>
+
+            <p id="planner-message" class="status-text">Selectionne un depart et une arrivee puis lance le calcul.</p>
+
+            <div class="route-output">
+              <p id="route-summary" class="status-text route-summary">Lance un calcul pour afficher les details d'itineraire.</p>
+              <div id="route-metrics" class="route-metrics hidden">
+                <article class="metric-card">
+                  <p class="metric-label">Distance</p>
+                  <p id="metric-distance" class="metric-value">-</p>
+                </article>
+                <article class="metric-card">
+                  <p class="metric-label">Duree estimee</p>
+                  <p id="metric-duration" class="metric-value">-</p>
+                </article>
+                <article class="metric-card">
+                  <p class="metric-label">Correspondances</p>
+                  <p id="metric-transfers" class="metric-value">-</p>
+                </article>
+              </div>
+              <div id="route-line-chips" class="route-line-chips"></div>
+              <ul id="route-steps" class="route-steps"></ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel map-panel">
+          <div class="panel-head">
+            <h2>Visualisation du trajet</h2>
+            <p>L'itineraire trouve est superpose avec glow et repere visuel des stations de passage.</p>
+          </div>
+          <div class="panel-body">
+            <div class="map-shell">
+              <svg id="route-map" aria-label="Carte itineraire"></svg>
+            </div>
+            <p id="route-map-status" class="status-text">Survole une ligne ou une station pour details contextuels.</p>
+            <div id="route-tooltip" class="tooltip" aria-hidden="true"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/pages/routePage.js"></script>
+</body>
+</html>

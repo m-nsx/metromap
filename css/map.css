@@ -1,0 +1,152 @@
+.map-shell {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  min-height: 500px;
+  border: 1px solid rgba(206, 226, 248, 0.12);
+  background: rgba(3, 10, 16, 0.64);
+}
+
+.mini-map-shell {
+  min-height: 380px;
+}
+
+#metro-map,
+#admin-map,
+#route-map {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  display: block;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+#metro-map.is-panning,
+#admin-map.is-panning,
+#route-map.is-panning {
+  cursor: grabbing;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  transition: opacity 120ms ease, transform 120ms ease;
+  border: 1px solid rgba(112, 226, 210, 0.5);
+  background: rgba(6, 16, 24, 0.95);
+  color: #e8f3ff;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.tooltip.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.metro-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: var(--line-width, 12);
+  opacity: 0.92;
+  transition: opacity 220ms ease, stroke-width 220ms ease, filter 220ms ease;
+  vector-effect: non-scaling-stroke;
+}
+
+.metro-line.is-dimmed {
+  opacity: var(--line-inactive-opacity, 0.2);
+}
+
+.metro-line.is-active {
+  opacity: 1;
+  stroke-width: var(--line-active-width, 16);
+  filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.26));
+}
+
+.metro-line-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 26;
+  pointer-events: stroke;
+  vector-effect: non-scaling-stroke;
+}
+
+.route-line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 6;
+  stroke-dasharray: 9 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.45));
+  animation: routeFlow 1.2s linear infinite;
+}
+
+.route-line-glow {
+  fill: none;
+  stroke: rgba(89, 197, 255, 0.42);
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  filter: blur(2px);
+}
+
+.station .station-dot {
+  transition: opacity 180ms ease, stroke-width 180ms ease, filter 180ms ease;
+}
+
+.station .station-hit {
+  fill: transparent;
+  pointer-events: all;
+}
+
+.station .station-label {
+  fill: #e7f1ff;
+  font-size: var(--station-font-size, 14px);
+  font-family: var(--font-family, "Outfit", "Segoe UI", sans-serif);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  paint-order: stroke;
+  stroke: rgba(6, 10, 18, 0.85);
+  stroke-width: 3px;
+  pointer-events: none;
+}
+
+.station.is-dimmed .station-dot,
+.station.is-dimmed .station-label {
+  opacity: 0.24;
+}
+
+.station.is-active .station-dot {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.38));
+  stroke-width: 4.5;
+}
+
+.station.is-route .station-dot {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 5;
+  filter: drop-shadow(0 0 8px rgba(89, 197, 255, 0.65));
+}
+
+.grid line {
+  stroke: rgba(143, 173, 203, 0.13);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+@keyframes routeFlow {
+  to {
+    stroke-dashoffset: -30;
+  }
+}

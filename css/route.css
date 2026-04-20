@@ -1,0 +1,147 @@
+.route-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.5fr);
+  gap: 14px;
+  min-height: calc(100vh - 140px);
+}
+
+.planner-panel .panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.route-output {
+  border: 1px solid rgba(196, 217, 239, 0.14);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(57, 216, 189, 0.14), transparent 38%),
+    rgba(7, 13, 20, 0.55);
+  padding: 12px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.route-summary {
+  margin: 0;
+}
+
+.route-metrics {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.metric-card {
+  border: 1px solid rgba(196, 217, 239, 0.2);
+  border-radius: 10px;
+  background: rgba(10, 19, 30, 0.78);
+  padding: 8px;
+}
+
+.metric-label {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.metric-value {
+  margin: 5px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: "Sora", "Outfit", sans-serif;
+}
+
+.route-line-chips {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.route-line-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(196, 217, 239, 0.24);
+  background: rgba(11, 21, 32, 0.8);
+  font-size: 12px;
+}
+
+.route-line-chip-color {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.route-steps {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.route-steps li {
+  position: relative;
+  padding: 10px 10px 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(196, 217, 239, 0.14);
+  background: rgba(13, 24, 36, 0.66);
+}
+
+.route-step-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.route-step-stations {
+  flex: 1;
+}
+
+.route-step-distance {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.route-step-line {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(196, 217, 239, 0.24);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.route-step-line-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.map-panel .panel-body {
+  padding-top: 10px;
+}
+
+@media (max-width: 1080px) {
+  .route-layout {
+    grid-template-columns: 1fr;
+    min-height: unset;
+  }
+
+  .route-metrics {
+    grid-template-columns: 1fr;
+  }
+}

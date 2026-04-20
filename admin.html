@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Reseau Metro</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <p>Data Viz SVG</p>
+        <h1>Administration du reseau metro</h1>
+      </div>
+      <div class="topbar-actions">
+        <nav class="nav-links" aria-label="Navigation principale">
+          <a href="index.html">Carte</a>
+          <a href="route.html">Itineraire</a>
+        </nav>
+        <a class="admin-key-btn active" href="admin.html" aria-label="Panel securise ouvert">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.9 3a6.1 6.1 0 0 0-4.83 9.83L3 19.9V22h2.1l1.5-1.5 1 1 1.4-1.4-1-1L9.9 17h2l1.63-1.63A6.1 6.1 0 1 0 14.9 3zm0 2a4.1 4.1 0 1 1 0 8.2 4.1 4.1 0 0 1 0-8.2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <main class="page-content admin-layout">
+      <section id="bootstrap-warning" class="panel">
+        <div class="panel-body">
+          <p class="status-text">Le module admin n'est pas charge. Ouvre cette page depuis un serveur local (ex: Live Server) puis recharge la page.</p>
+        </div>
+      </section>
+
+      <section id="login-section" class="panel auth-panel">
+        <div class="panel-head">
+          <h2>Connexion admin</h2>
+          <p>Authentification obligatoire avant edition de la topographie.</p>
+        </div>
+        <div class="panel-body stack">
+          <form id="login-form" class="stack" onsubmit="return false;">
+            <div>
+              <label for="username">Identifiant</label>
+              <input id="username" name="username" type="text" autocomplete="username" required>
+            </div>
+            <div>
+              <label for="password">Mot de passe</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" required>
+            </div>
+            <button id="login-submit" class="primary" type="button">Se connecter</button>
+          </form>
+          <p id="credentials-hint" class="auth-hint"></p>
+          <p id="login-message" class="status-text"></p>
+        </div>
+      </section>
+
+      <section id="admin-section" class="admin-shell hidden">
+        <section class="panel">
+          <div class="panel-body admin-toolbar">
+            <div class="actions-row">
+              <button id="save-network" class="primary" type="button">Sauvegarder les changements</button>
+              <button id="optimize-layout" type="button">Optimiser le placement</button>
+              <button id="populate-demo" class="warn" type="button">Peupler avec donnees de demo</button>
+              <button id="clear-network" class="danger" type="button">Vider la carte actuelle</button>
+              <button id="import-network" type="button">Importer JSON</button>
+              <button id="export-network" type="button">Exporter JSON</button>
+              <input id="import-network-file" type="file" accept="application/json,.json" class="hidden">
+            </div>
+            <div class="actions-row">
+              <span id="session-badge" class="badge"></span>
+              <button id="logout-admin" type="button">Deconnexion</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-body">
+            <p id="admin-feedback" class="status-text">Modifie stations/lignes puis sauvegarde pour propager aux autres pages.</p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h3>Securite du panel</h3>
+            <p>Le mot de passe est stocke sous forme de hash PBKDF2-SHA256 et compare via hash.</p>
+          </div>
+          <div class="panel-body stack">
+            <form id="password-form" class="stack">
+              <div class="split">
+                <div>
+                  <label for="current-password">Mot de passe actuel</label>
+                  <input id="current-password" type="password" autocomplete="current-password" required>
+                </div>
+                <div>
+                  <label for="new-password">Nouveau mot de passe</label>
+                  <input id="new-password" type="password" autocomplete="new-password" minlength="8" required>
+                </div>
+              </div>
+              <div class="split">
+                <div>
+                  <label for="confirm-password">Confirmation nouveau mot de passe</label>
+                  <input id="confirm-password" type="password" autocomplete="new-password" minlength="8" required>
+                </div>
+                <div class="actions-row password-actions">
+                  <button id="change-password" class="primary" type="submit">Changer le mot de passe</button>
+                </div>
+              </div>
+            </form>
+            <p id="password-feedback" class="status-text">Utilise au moins 8 caracteres. Le changement prend effet immediatement.</p>
+          </div>
+        </section>
+
+        <div class="admin-grid">
+          <section class="panel editor-card">
+            <div class="panel-head">
+              <h3>Topographie des stations</h3>
+              <p>Ajout, suppression et deplacement des stations.</p>
+            </div>
+            <div class="panel-body stack">
+              <div>
+                <label for="station-select">Station existante</label>
+                <select id="station-select"></select>
+              </div>
+
+              <div class="split">
+                <div>
+                  <label for="station-id">ID station</label>
+                  <input id="station-id" type="text" placeholder="S15">
+                </div>
+                <div>
+                  <label for="station-name">Nom station</label>
+                  <input id="station-name" type="text" placeholder="Nouveau Quartier">
+                </div>
+              </div>
+
+              <div class="split">
+                <div>
+                  <label for="station-x">Coordonnee X</label>
+                  <input id="station-x" type="number" step="1" placeholder="520">
+                </div>
+                <div>
+                  <label for="station-y">Coordonnee Y</label>
+                  <input id="station-y" type="number" step="1" placeholder="260">
+                </div>
+              </div>
+
+              <div class="split">
+                <div>
+                  <label for="station-label-dx">Decalage label X (optionnel)</label>
+                  <input id="station-label-dx" type="number" step="1" placeholder="13">
+                </div>
+                <div>
+                  <label for="station-label-dy">Decalage label Y (optionnel)</label>
+                  <input id="station-label-dy" type="number" step="1" placeholder="-12">
+                </div>
+              </div>
+
+              <div class="actions-row">
+                <button id="station-new" type="button">Nouvelle station</button>
+                <button id="station-save" class="primary" type="button">Enregistrer station</button>
+                <button id="station-delete" class="danger" type="button">Supprimer station</button>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Coordonnees</th>
+                      <th>Lignes</th>
+                    </tr>
+                  </thead>
+                  <tbody id="station-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel editor-card">
+            <div class="panel-head">
+              <h3>Topographie des lignes</h3>
+              <p>Definis les connexions entre stations dans l'ordre.</p>
+            </div>
+            <div class="panel-body stack">
+              <div>
+                <label for="line-select">Ligne existante</label>
+                <select id="line-select"></select>
+              </div>
+
+              <div class="split">
+                <div>
+                  <label for="line-id">ID ligne</label>
+                  <input id="line-id" type="text" placeholder="L6">
+                </div>
+                <div>
+                  <label for="line-name">Nom ligne</label>
+                  <input id="line-name" type="text" placeholder="Ligne 6">
+                </div>
+              </div>
+
+              <div class="split">
+                <div>
+                  <label for="line-color">Couleur de la ligne</label>
+                  <input id="line-color" type="color" value="#78a7d0">
+                </div>
+                <div></div>
+              </div>
+
+              <div>
+                <label for="line-stations">Stations dans l'ordre (IDs separes par virgule)</label>
+                <textarea id="line-stations" placeholder="S1, S2, S3, S4"></textarea>
+              </div>
+
+              <div class="actions-row">
+                <button id="line-new" type="button">Nouvelle ligne</button>
+                <button id="line-save" class="primary" type="button">Enregistrer ligne</button>
+                <button id="line-delete" class="danger" type="button">Supprimer ligne</button>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Stations</th>
+                      <th>Couleur</th>
+                    </tr>
+                  </thead>
+                  <tbody id="line-table-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel preview-card">
+            <div class="panel-head">
+              <h3>Apercu instantane</h3>
+              <p>Le plan est reconstruit a chaque modification en memoire. Clique sur une station ou ligne pour ouvrir le menu contextuel.</p>
+            </div>
+            <div class="panel-body">
+              <div class="map-shell mini-map-shell">
+                <svg id="admin-map" aria-label="Apercu carte admin"></svg>
+                <div id="map-context-menu" class="map-context-menu hidden" aria-hidden="true" role="menu">
+                  <p id="context-menu-title" class="context-menu-title"></p>
+                  <div class="context-menu-actions">
+                    <button id="context-edit" type="button">Modifier</button>
+                    <button id="context-rename" type="button">Renommer</button>
+                    <button id="context-highlight" type="button">Mettre en surbrillance</button>
+                    <button id="context-delete" class="danger" type="button">Supprimer</button>
+                  </div>
+                </div>
+              </div>
+              <p id="admin-map-status" class="status-text">Survole la carte pour verifier la topographie.</p>
+              <div id="admin-tooltip" class="tooltip" aria-hidden="true"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/pages/adminPage.js"></script>
+</body>
+</html>
