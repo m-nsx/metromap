@@ -1,4 +1,5 @@
 import { deepClone } from "../utils/object.js";
+import { localizeLineName } from "../services/localizationService.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -91,6 +92,7 @@ export function createMetroMapRenderer(options) {
   const svg = options.svg;
   const tooltip = options.tooltip || null;
   const statusElement = options.statusElement || null;
+  let translate = typeof options.translate === "function" ? options.translate : (key) => key;
   const enableNavigation = options.enableNavigation !== false;
   const onStationClick = typeof options.onStationClick === "function" ? options.onStationClick : null;
   const onLineClick = typeof options.onLineClick === "function" ? options.onLineClick : null;
@@ -134,16 +136,18 @@ export function createMetroMapRenderer(options) {
 
     if (state.activeLineId) {
       const line = state.lineById.get(state.activeLineId);
-      statusElement.textContent = line ? line.name + " en surbrillance" : "Ligne active";
+      statusElement.textContent = line
+        ? localizeLineName(line.name, translate) + " " + translate("map.highlighted")
+        : translate("map.activeLine");
       return;
     }
 
     if (state.routeStationIds.length > 1) {
-      statusElement.textContent = "Itineraire actif: " + state.routeStationIds.length + " stations";
+      statusElement.textContent = translate("map.activeRoute", { count: state.routeStationIds.length });
       return;
     }
 
-    statusElement.textContent = "Survolez une ligne ou une station pour explorer la carte.";
+    statusElement.textContent = translate("map.hover");
   }
 
   function buildIndexes() {
@@ -453,7 +457,9 @@ export function createMetroMapRenderer(options) {
       label.textContent = station.name;
 
       hitArea.addEventListener("mouseenter", (event) => {
-        const lines = Array.from(state.stationLines.get(station.id) || []).join(", ");
+        const lines = Array.from(state.stationLines.get(station.id) || [])
+          .map((lineId) => localizeLineName(state.lineById.get(lineId)?.name || lineId, translate))
+          .join(", ");
         showTooltip(station.name, event);
         if (!state.customStatusMessage) {
           setStatus(lines ? station.name + " · " + lines : station.name);
@@ -694,6 +700,16 @@ export function createMetroMapRenderer(options) {
     setStatus("");
   }
 
+  function setTranslator(nextTranslator) {
+    if (typeof nextTranslator !== "function") {
+      throw new TypeError("Le traducteur doit être une fonction.");
+    }
+    translate = nextTranslator;
+    if (!state.customStatusMessage) {
+      setStatus("");
+    }
+  }
+
   if (enableNavigation) {
     attachNavigation();
   }
@@ -706,6 +722,7 @@ export function createMetroMapRenderer(options) {
     clearRoute,
     setActiveLine,
     setStatus,
+    setTranslator,
     clearStatusMessage,
     getState
   };

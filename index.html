@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plan Metro Interactif</title>
+  <title data-i18n="home.title">Plan Metro Interactif</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/map.css">
 </head>
@@ -16,34 +16,42 @@
       </div>
 
       <div class="topbar-actions">
-        <nav class="nav-links" aria-label="Navigation principale">
-          <a class="active" href="index.html">Carte</a>
-          <a href="route.html">Itineraire</a>
+        <nav class="nav-links" aria-label="Navigation principale" data-i18n-aria-label="nav.label">
+          <a class="active" href="index.html" data-i18n="nav.map">Carte</a>
+          <a href="route.html" data-i18n="nav.route">Itineraire</a>
         </nav>
+        <label class="language-picker">
+          <span class="visually-hidden" data-i18n="language.label">Choisir la langue</span>
+          <select id="language-select" aria-label="Choisir la langue">
+            <option value="fr" data-i18n="language.french">🇫🇷 Français</option>
+            <option value="en" data-i18n="language.english">🇬🇧 Anglais</option>
+            <option value="ko" data-i18n="language.korean">🇰🇷 Coréen</option>
+          </select>
+        </label>
       </div>
     </header>
 
     <main class="page-content">
       <section class="panel">
         <div class="panel-head">
-          <h2>Carte des transports - Lake City</h2>
-          <p>Déplacez vous facilement sur l'ensemble de notre réseau</p>
+          <h2 data-i18n="home.heading">Carte des transports - Lake City</h2>
+          <p data-i18n="home.description">Déplacez-vous facilement sur l'ensemble de notre réseau</p>
         </div>
         <div class="panel-body stack">
           <div class="actions-row">
             <!-- <button id="simulate-update" type="button">Simuler update topographique</button> -->
-            <button id="reset-view" type="button">Recentrer la vue</button>
-            <a href="https://webmap.troulycube.fr"><button class="primary" type="button">Consultez la webmap</button></a>
+            <button id="reset-view" type="button" data-i18n="home.reset">Recentrer la vue</button>
+            <a href="https://webmap.troulycube.fr"><button class="primary" type="button" data-i18n="home.webmap">Consulter la webmap</button></a>
             <!-- <button id="reload-bundle" class="warn" type="button">Recharger les données</button> -->
           </div>
-          <p id="main-status" class="status-text">Survolez une ligne ou une station pour explorer la carte</p>
+          <p id="main-status" class="status-text" data-i18n="home.mapStatus">Survolez une ligne ou une station pour explorer la carte</p>
         </div>
       </section>
 
       <section class="panel">
         <div class="panel-body">
           <div class="map-shell">
-            <svg id="metro-map" aria-label="Plan de metro dynamique"></svg>
+            <svg id="metro-map" aria-label="Plan de métro dynamique" data-i18n-aria-label="home.mapAlt"></svg>
           </div>
           <div id="main-tooltip" class="tooltip" aria-hidden="true"></div>
         </div>

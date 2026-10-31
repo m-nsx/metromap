@@ -1,7 +1,10 @@
 import { createMetroMapRenderer } from "../core/mapRenderer.js";
 import { loadSiteNetworkBundle } from "../services/siteDataService.js";
 import { findShortestPath } from "../services/pathService.js";
+import { initializeLocalization, localizeLineName } from "../services/localizationService.js";
 
+const localization = initializeLocalization();
+const { translate } = localization;
 const startSelect = document.getElementById("start-station");
 const endSelect = document.getElementById("end-station");
 const calculateButton = document.getElementById("calculate-route");
@@ -20,14 +23,24 @@ const plannerMessage = document.getElementById("planner-message");
 const renderer = createMetroMapRenderer({
   svg: document.getElementById("route-map"),
   tooltip: document.getElementById("route-tooltip"),
-  statusElement: document.getElementById("route-map-status")
+  statusElement: document.getElementById("route-map-status"),
+  translate
 });
 
 const state = {
-  bundle: null
+  bundle: null,
+  route: null,
+  plannerMessageKey: null,
+  plannerMessageType: "info"
 };
 
-function setPlannerMessage(message, type = "info") {
+function setPlannerMessage(messageKey, type = "info") {
+  state.plannerMessageKey = messageKey;
+  state.plannerMessageType = type;
+  setPlannerMessageText(translate(messageKey), type);
+}
+
+function setPlannerMessageText(message, type = "info") {
   plannerMessage.textContent = message;
   if (type === "error") {
     plannerMessage.style.color = "var(--danger)";
@@ -41,7 +54,10 @@ function setPlannerMessage(message, type = "info") {
 }
 
 function buildLineNameMap() {
-  return new Map(state.bundle.data.connections.map((line) => [line.lineId, line.name]));
+  return new Map(state.bundle.data.connections.map((line) => [
+    line.lineId,
+    localizeLineName(line.name, translate)
+  ]));
 }
 
 function estimateMinutes(distance, transfers) {
@@ -92,7 +108,7 @@ function createStepElement(segment, lineNameMap) {
 
   const distanceSpan = document.createElement("span");
   distanceSpan.className = "route-step-distance";
-  distanceSpan.textContent = segment.distance.toFixed(1) + " u";
+  distanceSpan.textContent = segment.distance.toFixed(1) + " " + translate("route.unit");
 
   main.appendChild(stationSpan);
   main.appendChild(distanceSpan);
@@ -110,7 +126,7 @@ function createStepElement(segment, lineNameMap) {
   const lineText = document.createElement("span");
   lineText.textContent = segment.lineId
     ? (lineNameMap.get(segment.lineId) || segment.lineId)
-    : "Segment hors ligne";
+    : translate("route.offlineSegment");
 
   lineBadge.appendChild(lineDot);
   lineBadge.appendChild(lineText);
@@ -121,19 +137,19 @@ function createStepElement(segment, lineNameMap) {
 
 function renderResult(route) {
   if (!route) {
-    resetRouteDisplay("Aucun itineraire trouve pour cette selection.");
+    resetRouteDisplay(translate("route.noPath"));
     return;
   }
 
   const lineNameMap = buildLineNameMap();
   const minutes = estimateMinutes(route.totalDistance, route.transfers);
-  const startStation = route.segments[0]?.fromName || route.stationIds[0] || "Depart";
-  const endStation = route.segments[route.segments.length - 1]?.toName || route.stationIds[0] || "Arrivee";
+  const startStation = route.segments[0]?.fromName || route.stationIds[0] || translate("route.departure");
+  const endStation = route.segments[route.segments.length - 1]?.toName || route.stationIds[0] || translate("route.arrival");
 
   resultSummary.textContent = startStation + " -> " + endStation;
   routeMetrics.classList.remove("hidden");
-  metricDistance.textContent = route.totalDistance.toFixed(1) + " u";
-  metricDuration.textContent = minutes + " min";
+  metricDistance.textContent = route.totalDistance.toFixed(1) + " " + translate("route.unit");
+  metricDuration.textContent = minutes + " " + translate("route.minutes");
   metricTransfers.textContent = String(route.transfers);
   renderLineChips(route, lineNameMap);
 
@@ -141,7 +157,7 @@ function renderResult(route) {
 
   if (route.segments.length === 0) {
     const item = document.createElement("li");
-    item.textContent = "Depart et arrivee identiques.";
+    item.textContent = translate("route.sameStations");
     routeStepsContainer.appendChild(item);
     return;
   }
@@ -187,20 +203,21 @@ function calculateRoute() {
 
   try {
     const route = findShortestPath(state.bundle.data, startId, endId);
+    state.route = route;
     renderResult(route);
 
     if (!route) {
       renderer.clearRoute();
-      setPlannerMessage("Aucun chemin disponible.", "error");
+      setPlannerMessage("route.noAvailablePath", "error");
       return;
     }
 
     renderer.setRoute(route.stationIds);
-    renderer.setStatus("Itineraire actif: " + route.stationIds.length + " stations");
-    setPlannerMessage("Itineraire calcule avec succes.", "ok");
+    renderer.setStatus(translate("route.active", { count: route.stationIds.length }));
+    setPlannerMessage("route.calculated", "ok");
   } catch (error) {
     console.error(error);
-    setPlannerMessage(error.message, "error");
+    setPlannerMessageText(error.message, "error");
   }
 }
 
@@ -209,8 +226,9 @@ async function reloadNetwork() {
   renderer.setBundle(state.bundle);
   renderer.clearRoute();
   populateStationSelectors();
-  resetRouteDisplay("Lance un calcul pour afficher les details d'itineraire.");
-  setPlannerMessage("Reseau recharge depuis le fichier JSON du site.", "ok");
+  state.route = null;
+  resetRouteDisplay(translate("route.initialSummary"));
+  setPlannerMessage("route.reloaded", "ok");
 }
 
 function attachEvents() {
@@ -225,8 +243,9 @@ function attachEvents() {
   clearButton.addEventListener("click", () => {
     renderer.clearRoute();
     renderer.clearStatusMessage();
-    resetRouteDisplay("Lance un calcul pour afficher les details d'itineraire.");
-    setPlannerMessage("Itineraire efface.", "info");
+    state.route = null;
+    resetRouteDisplay(translate("route.initialSummary"));
+    setPlannerMessage("route.cleared", "info");
   });
 
   // reloadButton.addEventListener("click", () => {
@@ -244,5 +263,23 @@ async function init() {
 
 init().catch((error) => {
   console.error(error);
-  setPlannerMessage("Erreur d'initialisation de la page itineraire.", "error");
+  setPlannerMessage("route.initError", "error");
+});
+
+localization.subscribe((nextTranslate) => {
+  renderer.setTranslator(nextTranslate);
+  if (!state.bundle) {
+    return;
+  }
+  populateStationSelectors();
+  if (state.route) {
+    renderResult(state.route);
+    renderer.setStatus(nextTranslate("route.active", { count: state.route.stationIds.length }));
+  } else {
+    resetRouteDisplay(nextTranslate("route.initialSummary"));
+    renderer.clearStatusMessage();
+  }
+  if (state.plannerMessageKey) {
+    setPlannerMessage(state.plannerMessageKey, state.plannerMessageType);
+  }
 });

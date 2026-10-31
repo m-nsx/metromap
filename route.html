@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calcul Itineraire Metro</title>
+  <title data-i18n="route.title">Calcul d'itinéraire Metro</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/map.css">
   <link rel="stylesheet" href="css/route.css">
@@ -16,10 +16,18 @@
         <p>Unicorp Transportation, Infrastructure & Logistical Services</p>
       </div>
       <div class="topbar-actions">
-        <nav class="nav-links" aria-label="Navigation principale">
-          <a href="index.html">Carte</a>
-          <a class="active" href="route.html">Itineraire</a>
+        <nav class="nav-links" aria-label="Navigation principale" data-i18n-aria-label="nav.label">
+          <a href="index.html" data-i18n="nav.map">Carte</a>
+          <a class="active" href="route.html" data-i18n="nav.route">Itineraire</a>
         </nav>
+        <label class="language-picker">
+          <span class="visually-hidden" data-i18n="language.label">Choisir la langue</span>
+          <select id="language-select" aria-label="Choisir la langue">
+            <option value="fr" data-i18n="language.french">🇫🇷 Français</option>
+            <option value="en" data-i18n="language.english">🇬🇧 Anglais</option>
+            <option value="ko" data-i18n="language.korean">🇰🇷 Coréen</option>
+          </select>
+        </label>
       </div>
     </header>
 
@@ -27,43 +35,43 @@
       <div class="route-layout">
         <section class="panel planner-panel">
           <div class="panel-head">
-            <h2>Planificateur d'itinéraire</h2>
-            <p>Calculez le chemin optimal entre deux stations</p>
+            <h2 data-i18n="route.heading">Planificateur d'itinéraire</h2>
+            <p data-i18n="route.description">Calculez le chemin optimal entre deux stations</p>
           </div>
 
           <div class="panel-body">
             <div>
-              <label for="start-station">Station de départ</label>
+              <label for="start-station" data-i18n="route.start">Station de départ</label>
               <select id="start-station"></select>
             </div>
 
             <div>
-              <label for="end-station">Station d'arrivée</label>
+              <label for="end-station" data-i18n="route.end">Station d'arrivée</label>
               <select id="end-station"></select>
             </div>
 
             <div class="actions-row">
-              <button id="calculate-route" class="primary" type="button">Calculer</button>
-              <button id="invert-route" type="button">Inverser</button>
-              <button id="clear-route" type="button">Effacer</button>
+              <button id="calculate-route" class="primary" type="button" data-i18n="route.calculate">Calculer</button>
+              <button id="invert-route" type="button" data-i18n="route.invert">Inverser</button>
+              <button id="clear-route" type="button" data-i18n="route.clear">Effacer</button>
               <!-- <button id="reload-network" class="warn" type="button">Recharger les données</button> -->
             </div>
 
-            <p id="planner-message" class="status-text">Sélectionnez une station de départ et une station d'arrivée</p>
+            <p id="planner-message" class="status-text" data-i18n="route.prompt">Sélectionnez une station de départ et une station d'arrivée</p>
 
             <div class="route-output">
-              <p id="route-summary" class="status-text route-summary">Lancez un calcul pour afficher les details d'itineraire</p>
+              <p id="route-summary" class="status-text route-summary" data-i18n="route.initialSummary">Lancez un calcul pour afficher les détails de l'itinéraire</p>
               <div id="route-metrics" class="route-metrics hidden">
                 <article class="metric-card">
-                  <p class="metric-label">Distance</p>
+                  <p class="metric-label" data-i18n="route.distance">Distance</p>
                   <p id="metric-distance" class="metric-value">-</p>
                 </article>
                 <article class="metric-card">
-                  <p class="metric-label">Durée</p>
+                  <p class="metric-label" data-i18n="route.duration">Durée</p>
                   <p id="metric-duration" class="metric-value">-</p>
                 </article>
                 <article class="metric-card">
-                  <p class="metric-label">Correspondances</p>
+                  <p class="metric-label" data-i18n="route.transfers">Correspondances</p>
                   <p id="metric-transfers" class="metric-value">-</p>
                 </article>
               </div>
@@ -75,14 +83,14 @@
 
         <section class="panel map-panel">
           <div class="panel-head">
-            <h2>Trajet</h2>
-            <p>L'itinéaire calculé est affiché sur la carte</p>
+            <h2 data-i18n="route.mapHeading">Trajet</h2>
+            <p data-i18n="route.mapDescription">L'itinéraire calculé est affiché sur la carte</p>
           </div>
           <div class="panel-body">
             <div class="map-shell">
-              <svg id="route-map" aria-label="Carte itineraire"></svg>
+              <svg id="route-map" aria-label="Carte de l'itinéraire" data-i18n-aria-label="route.mapAlt"></svg>
             </div>
-            <p id="route-map-status" class="status-text">Survolez une ligne ou une station pour afficher les détails</p>
+            <p id="route-map-status" class="status-text" data-i18n="route.mapStatus">Survolez une ligne ou une station pour afficher les détails</p>
             <div id="route-tooltip" class="tooltip" aria-hidden="true"></div>
           </div>
         </section>

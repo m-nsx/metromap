@@ -1,7 +1,9 @@
 import { createMetroMapRenderer } from "../core/mapRenderer.js";
 import { loadSiteNetworkBundle } from "../services/siteDataService.js";
 import { deepClone } from "../utils/object.js";
+import { initializeLocalization } from "../services/localizationService.js";
 
+const localization = initializeLocalization();
 const svg = document.getElementById("metro-map");
 const tooltip = document.getElementById("main-tooltip");
 const status = document.getElementById("main-status");
@@ -12,7 +14,8 @@ const reloadButton = document.getElementById("reload-bundle");
 const renderer = createMetroMapRenderer({
   svg,
   tooltip,
-  statusElement: status
+  statusElement: status,
+  translate: localization.translate
 });
 
 let bundle = null;
@@ -57,7 +60,7 @@ async function reloadFromJson() {
   bundle = await loadSiteNetworkBundle();
   renderer.setBundle(bundle);
   renderer.clearRoute();
-  flashStatus("Reseau recharge depuis le fichier JSON du site.");
+  flashStatus(localization.translate("index.reload"));
 }
 
 async function init() {
@@ -71,5 +74,10 @@ async function init() {
 
 init().catch((error) => {
   console.error(error);
-  renderer.setStatus("Erreur de chargement du reseau.");
+  renderer.setStatus(localization.translate("index.loadError"));
+});
+
+localization.subscribe((translate) => {
+  renderer.setTranslator(translate);
+  renderer.clearStatusMessage();
 });
