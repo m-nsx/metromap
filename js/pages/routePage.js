@@ -30,17 +30,14 @@ const renderer = createMetroMapRenderer({
 const state = {
   bundle: null,
   route: null,
-  plannerMessageKey: null,
+  summaryKey: "route.initialSummary",
+  plannerMessageKey: "route.prompt",
+  plannerMessageText: "",
   plannerMessageType: "info"
 };
 
-function setPlannerMessage(messageKey, type = "info") {
-  state.plannerMessageKey = messageKey;
-  state.plannerMessageType = type;
-  setPlannerMessageText(translate(messageKey), type);
-}
-
 function setPlannerMessageText(message, type = "info") {
+  state.plannerMessageText = message;
   plannerMessage.textContent = message;
   if (type === "error") {
     plannerMessage.style.color = "var(--danger)";
@@ -51,6 +48,12 @@ function setPlannerMessageText(message, type = "info") {
     return;
   }
   plannerMessage.style.color = "var(--text-muted)";
+}
+
+function setPlannerMessage(messageKey, type = "info") {
+  state.plannerMessageKey = messageKey;
+  state.plannerMessageType = type;
+  setPlannerMessageText(translate(messageKey), type);
 }
 
 function buildLineNameMap() {
@@ -65,8 +68,9 @@ function estimateMinutes(distance, transfers) {
   return Math.max(2, Math.round(base + transfers * 3));
 }
 
-function resetRouteDisplay(message) {
-  resultSummary.textContent = message;
+function resetRouteDisplay(messageKey) {
+  state.summaryKey = messageKey;
+  resultSummary.textContent = translate(messageKey);
   routeStepsContainer.innerHTML = "";
   routeLineChips.innerHTML = "";
 
@@ -136,8 +140,9 @@ function createStepElement(segment, lineNameMap) {
 }
 
 function renderResult(route) {
+  state.route = route;
   if (!route) {
-    resetRouteDisplay(translate("route.noPath"));
+    resetRouteDisplay("route.noPath");
     return;
   }
 
@@ -203,11 +208,11 @@ function calculateRoute() {
 
   try {
     const route = findShortestPath(state.bundle.data, startId, endId);
-    state.route = route;
     renderResult(route);
 
     if (!route) {
       renderer.clearRoute();
+      renderer.clearStatusMessage();
       setPlannerMessage("route.noAvailablePath", "error");
       return;
     }
@@ -217,6 +222,7 @@ function calculateRoute() {
     setPlannerMessage("route.calculated", "ok");
   } catch (error) {
     console.error(error);
+    state.plannerMessageKey = null;
     setPlannerMessageText(error.message, "error");
   }
 }
@@ -227,7 +233,7 @@ async function reloadNetwork() {
   renderer.clearRoute();
   populateStationSelectors();
   state.route = null;
-  resetRouteDisplay(translate("route.initialSummary"));
+  resetRouteDisplay("route.initialSummary");
   setPlannerMessage("route.reloaded", "ok");
 }
 
@@ -244,7 +250,7 @@ function attachEvents() {
     renderer.clearRoute();
     renderer.clearStatusMessage();
     state.route = null;
-    resetRouteDisplay(translate("route.initialSummary"));
+    resetRouteDisplay("route.initialSummary");
     setPlannerMessage("route.cleared", "info");
   });
 
@@ -271,15 +277,18 @@ localization.subscribe((nextTranslate) => {
   if (!state.bundle) {
     return;
   }
-  populateStationSelectors();
+
   if (state.route) {
     renderResult(state.route);
-    renderer.setStatus(nextTranslate("route.active", { count: state.route.stationIds.length }));
+    renderer.setStatus(translate("route.active", { count: state.route.stationIds.length }));
   } else {
-    resetRouteDisplay(nextTranslate("route.initialSummary"));
+    resetRouteDisplay(state.summaryKey);
     renderer.clearStatusMessage();
   }
+
   if (state.plannerMessageKey) {
     setPlannerMessage(state.plannerMessageKey, state.plannerMessageType);
+  } else {
+    setPlannerMessageText(state.plannerMessageText, state.plannerMessageType);
   }
 });

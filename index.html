@@ -20,14 +20,17 @@
           <a class="active" href="index.html" data-i18n="nav.map">Carte</a>
           <a href="route.html" data-i18n="nav.route">Itineraire</a>
         </nav>
-        <label class="language-picker">
-          <span class="visually-hidden" data-i18n="language.label">Choisir la langue</span>
-          <select id="language-select" aria-label="Choisir la langue">
-            <option value="fr" data-i18n="language.french">🇫🇷 Français</option>
-            <option value="en" data-i18n="language.english">🇬🇧 Anglais</option>
-            <option value="ko" data-i18n="language.korean">🇰🇷 Coréen</option>
-          </select>
-        </label>
+        <div class="language-switcher" role="group" aria-label="Choisir la langue" data-i18n-aria-label="language.label">
+          <button class="language-option" type="button" data-language="fr" aria-pressed="false">
+            🇫🇷 <span data-i18n="language.french">Français</span>
+          </button>
+          <button class="language-option" type="button" data-language="en" aria-pressed="false">
+            🇬🇧 <span data-i18n="language.english">English</span>
+          </button>
+          <button class="language-option" type="button" data-language="ko" aria-pressed="false">
+            🇰🇷 <span data-i18n="language.korean">한국어</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -41,7 +44,7 @@
           <div class="actions-row">
             <!-- <button id="simulate-update" type="button">Simuler update topographique</button> -->
             <button id="reset-view" type="button" data-i18n="home.reset">Recentrer la vue</button>
-            <a href="https://webmap.troulycube.fr"><button class="primary" type="button" data-i18n="home.webmap">Consulter la webmap</button></a>
+            <a href="https://webmap.troulycube.fr"><button class="primary" type="button" data-i18n="home.webmap">Consultez la webmap</button></a>
             <!-- <button id="reload-bundle" class="warn" type="button">Recharger les données</button> -->
           </div>
           <p id="main-status" class="status-text" data-i18n="home.mapStatus">Survolez une ligne ou une station pour explorer la carte</p>
@@ -51,7 +54,7 @@
       <section class="panel">
         <div class="panel-body">
           <div class="map-shell">
-            <svg id="metro-map" aria-label="Plan de métro dynamique" data-i18n-aria-label="home.mapAlt"></svg>
+            <svg id="metro-map" aria-label="Plan de metro dynamique" data-i18n-aria-label="home.mapAlt"></svg>
           </div>
           <div id="main-tooltip" class="tooltip" aria-hidden="true"></div>
         </div>

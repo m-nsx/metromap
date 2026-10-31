@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n="route.title">Calcul d'itinéraire Metro</title>
+  <title data-i18n="route.title">Calcul Itineraire Metro</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/map.css">
   <link rel="stylesheet" href="css/route.css">
@@ -20,14 +20,17 @@
           <a href="index.html" data-i18n="nav.map">Carte</a>
           <a class="active" href="route.html" data-i18n="nav.route">Itineraire</a>
         </nav>
-        <label class="language-picker">
-          <span class="visually-hidden" data-i18n="language.label">Choisir la langue</span>
-          <select id="language-select" aria-label="Choisir la langue">
-            <option value="fr" data-i18n="language.french">🇫🇷 Français</option>
-            <option value="en" data-i18n="language.english">🇬🇧 Anglais</option>
-            <option value="ko" data-i18n="language.korean">🇰🇷 Coréen</option>
-          </select>
-        </label>
+        <div class="language-switcher" role="group" aria-label="Choisir la langue" data-i18n-aria-label="language.label">
+          <button class="language-option" type="button" data-language="fr" aria-pressed="false">
+            🇫🇷 <span data-i18n="language.french">Français</span>
+          </button>
+          <button class="language-option" type="button" data-language="en" aria-pressed="false">
+            🇬🇧 <span data-i18n="language.english">English</span>
+          </button>
+          <button class="language-option" type="button" data-language="ko" aria-pressed="false">
+            🇰🇷 <span data-i18n="language.korean">한국어</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -60,7 +63,7 @@
             <p id="planner-message" class="status-text" data-i18n="route.prompt">Sélectionnez une station de départ et une station d'arrivée</p>
 
             <div class="route-output">
-              <p id="route-summary" class="status-text route-summary" data-i18n="route.initialSummary">Lancez un calcul pour afficher les détails de l'itinéraire</p>
+              <p id="route-summary" class="status-text route-summary" data-i18n="route.initialSummary">Lancez un calcul pour afficher les details d'itineraire</p>
               <div id="route-metrics" class="route-metrics hidden">
                 <article class="metric-card">
                   <p class="metric-label" data-i18n="route.distance">Distance</p>
@@ -88,7 +91,7 @@
           </div>
           <div class="panel-body">
             <div class="map-shell">
-              <svg id="route-map" aria-label="Carte de l'itinéraire" data-i18n-aria-label="route.mapAlt"></svg>
+              <svg id="route-map" aria-label="Carte itineraire" data-i18n-aria-label="route.mapAlt"></svg>
             </div>
             <p id="route-map-status" class="status-text" data-i18n="route.mapStatus">Survolez une ligne ou une station pour afficher les détails</p>
             <div id="route-tooltip" class="tooltip" aria-hidden="true"></div>

@@ -1,9 +1,9 @@
 const translations = {
   fr: {
     "language.label": "Choisir la langue",
-    "language.french": "🇫🇷 Français",
-    "language.english": "🇬🇧 Anglais",
-    "language.korean": "🇰🇷 Coréen",
+    "language.french": "Français",
+    "language.english": "English",
+    "language.korean": "한국어",
     "line.name": "Ligne {name}",
     "nav.label": "Navigation principale",
     "nav.map": "Carte",
@@ -54,9 +54,9 @@ const translations = {
   },
   en: {
     "language.label": "Choose language",
-    "language.french": "🇫🇷 French",
-    "language.english": "🇬🇧 English",
-    "language.korean": "🇰🇷 Korean",
+    "language.french": "Français",
+    "language.english": "English",
+    "language.korean": "한국어",
     "line.name": "Line {name}",
     "nav.label": "Main navigation",
     "nav.map": "Map",
@@ -107,9 +107,9 @@ const translations = {
   },
   ko: {
     "language.label": "언어 선택",
-    "language.french": "🇫🇷 프랑스어",
-    "language.english": "🇬🇧 영어",
-    "language.korean": "🇰🇷 한국어",
+    "language.french": "Français",
+    "language.english": "English",
+    "language.korean": "한국어",
     "line.name": "{name}호선",
     "nav.label": "주요 메뉴",
     "nav.map": "노선도",
@@ -169,18 +169,17 @@ export function localizeLineName(name, translate) {
 }
 
 export function initializeLocalization() {
-  const selector = document.getElementById("language-select");
-  let currentLanguage = getStoredLanguage();
+  const languageButtons = document.querySelectorAll("[data-language]");
   const listeners = new Set();
+  let currentLanguage = DEFAULT_LANGUAGE;
 
-  function getStoredLanguage() {
-    try {
-      const savedLanguage = window.localStorage.getItem(STORAGE_KEY);
-      return Object.hasOwn(translations, savedLanguage) ? savedLanguage : DEFAULT_LANGUAGE;
-    } catch (error) {
-      console.warn("Unable to read the saved language.", error);
-      return DEFAULT_LANGUAGE;
+  try {
+    const savedLanguage = window.localStorage.getItem(STORAGE_KEY);
+    if (Object.hasOwn(translations, savedLanguage)) {
+      currentLanguage = savedLanguage;
     }
+  } catch (error) {
+    console.warn("Unable to read the saved language.", error);
   }
 
   function translate(key, values = {}) {
@@ -206,9 +205,9 @@ export function initializeLocalization() {
       element.setAttribute("aria-label", translate(element.dataset.i18nAriaLabel));
     }
 
-    if (selector) {
-      selector.setAttribute("aria-label", translate("language.label"));
-      selector.value = currentLanguage;
+    for (const button of languageButtons) {
+      const isSelected = button.dataset.language === currentLanguage;
+      button.setAttribute("aria-pressed", String(isSelected));
     }
   }
 
@@ -231,7 +230,9 @@ export function initializeLocalization() {
   }
 
   applyTranslations();
-  selector?.addEventListener("change", () => setLanguage(selector.value));
+  for (const button of languageButtons) {
+    button.addEventListener("click", () => setLanguage(button.dataset.language));
+  }
 
   return {
     translate,
